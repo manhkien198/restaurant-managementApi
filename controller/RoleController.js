@@ -3,9 +3,10 @@ class UserController {
   //GET /role
   index(req, res, next) {
     RoleSchema.find({})
-      .then((roles) => res.json(roles))
+      .then((roles) => {
+        res.json(roles);
+      })
       .catch(next);
-    // res.render("home");
   }
 }
 module.exports = new UserController();

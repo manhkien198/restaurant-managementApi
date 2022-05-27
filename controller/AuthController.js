@@ -2,13 +2,6 @@ const User = require("../model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 class UserController {
-  //GET /news
-  index(req, res, next) {
-    User.find({})
-      .then((users) => res.json(users))
-      .catch(next);
-    // res.render("home");
-  }
   //POST /auth/register
   async login(req, res) {
     try {
