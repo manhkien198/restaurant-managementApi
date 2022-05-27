@@ -4,5 +4,5 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 const RoleController = require("../controller/RoleController");
 
-router.post("/", auth, RoleController.index);
+router.get("/", auth, RoleController.index);
 module.exports = router;
