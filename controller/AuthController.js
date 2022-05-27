@@ -47,8 +47,7 @@ class UserController {
   async register(req, res) {
     try {
       // Get user input
-      const { first_name, last_name, email, password, confirmed_password } =
-        req.body;
+      const { first_name, last_name, email, password } = req.body;
 
       // Validate user input
       if (!(email && password && first_name && last_name)) {
@@ -65,13 +64,7 @@ class UserController {
 
       //Encrypt user password
       const encryptedPassword = await bcrypt.hash(password, 10);
-      const encryptedConfirmPassword = await bcrypt.hash(
-        confirmed_password,
-        10
-      );
-      if (encryptedPassword !== encryptedConfirmPassword) {
-        res.status(400).send("ConfirmedPassword not match");
-      }
+
       // Create user in our database
       const user = await User.create({
         first_name,
