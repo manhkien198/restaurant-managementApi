@@ -1,5 +1,5 @@
 const RoleSchema = require("../model/role");
-class UserController {
+class RoleController {
   //GET /role
   index(req, res, next) {
     RoleSchema.find({})
@@ -9,4 +9,4 @@ class UserController {
       .catch(next);
   }
 }
-module.exports = new UserController();
+module.exports = new RoleController();
