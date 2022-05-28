@@ -4,7 +4,7 @@ class RoleController {
   index(req, res, next) {
     RoleSchema.find({})
       .then((roles) => {
-        return res.json(roles);
+        res.json(roles);
       })
       .catch(next);
   }
