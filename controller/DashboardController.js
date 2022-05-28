@@ -4,7 +4,7 @@ class DashboardController {
   index(req, res, next) {
     DashboardSchema.find({})
       .then((data) => {
-        return res.json(data);
+        res.json(data);
       })
       .catch(next);
   }
