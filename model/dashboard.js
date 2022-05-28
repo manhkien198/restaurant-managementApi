@@ -11,4 +11,4 @@ const DashboardSchema = new mongoose.Schema({
   interest: String,
 });
 
-module.exports = mongoose.model("dashboard", DashboardSchema, "dashboard");
+module.exports = mongoose.model("dashboard", DashboardSchema);
