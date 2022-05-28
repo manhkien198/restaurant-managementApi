@@ -10,7 +10,7 @@ class UserController {
 
       // Validate user input
       if (!(email && password)) {
-        res.status(400).send("All input is required");
+        return res.status(400).send("All input is required");
       }
       // Validate if user exist in our database
       const user = await User.findOne({ email });
@@ -29,7 +29,7 @@ class UserController {
         user.token = token;
 
         // user
-        res.status(200).json(user);
+        return res.status(200).json(user);
       }
       res.status(400).send("Invalid Credentials");
     } catch (err) {
@@ -44,7 +44,7 @@ class UserController {
 
       // Validate user input
       if (!(email && password && first_name && last_name)) {
-        res.status(400).send("All input is required");
+        return res.status(400).send("All input is required");
       }
 
       // check if user already exist
@@ -78,7 +78,7 @@ class UserController {
       user.token = token;
 
       // return new user
-      res.status(201).json(user);
+      return res.status(201).json(user);
     } catch (err) {
       console.log(err);
     }
