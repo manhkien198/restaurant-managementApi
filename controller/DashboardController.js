@@ -3,8 +3,8 @@ class DashboardController {
   //GET /role
   index(req, res, next) {
     DashboardSchema.find({})
-      .then((data) => {
-        res.json(data);
+      .then((roles) => {
+        res.json(roles);
       })
       .catch(next);
   }
