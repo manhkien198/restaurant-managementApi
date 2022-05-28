@@ -31,7 +31,7 @@ class UserController {
         // user
         return res.status(200).json(user);
       }
-      res.status(400).send("Invalid Credentials");
+      return res.status(400).send("Invalid Credentials");
     } catch (err) {
       console.log(err);
     }
