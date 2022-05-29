@@ -4,7 +4,7 @@ class FoodController {
   index(req, res, next) {
     FoodSchema.find({})
       .then((data) => {
-        res.json(data);
+        return res.json(data);
       })
       .catch(next);
   }
