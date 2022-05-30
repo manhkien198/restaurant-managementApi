@@ -14,11 +14,17 @@ class FoodController {
       if (!size) {
         size = 10;
       }
-
+      let foodLength;
       //  We have to make it integer because
       // query parameter passed is string
       const limit = parseInt(size);
-
+      await FoodSchema.find({})
+        .then((food) => {
+          foodLength = food.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       // We pass 1 for sorting data in
       // ascending order using ids
       const foods = await FoodSchema.find()
@@ -27,7 +33,8 @@ class FoodController {
       res.send({
         page,
         size,
-        foods: foods,
+        data: foods,
+        total: foodLength,
       });
     } catch (error) {
       res.sendStatus(500);
