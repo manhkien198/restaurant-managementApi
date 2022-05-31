@@ -21,7 +21,7 @@ class UserController {
           { user_id: user._id, email },
           process.env.TOKEN_KEY,
           {
-            expiresIn: '20s',
+            expiresIn: '2h',
           }
         );
         const refreshToken = jwt.sign(
@@ -110,7 +110,7 @@ class UserController {
         { user_id: user._id, email },
         process.env.TOKEN_KEY,
         {
-          expiresIn: '20s',
+          expiresIn: '2h',
         }
       );
       const newRefreshToken = jwt.sign(
