@@ -18,6 +18,8 @@ class FoodController {
       //  We have to make it integer because
       // query parameter passed is string
       const limit = parseInt(size);
+      const skip = (page - 1) * size;
+
       await FoodSchema.find({})
         .then((food) => {
           foodLength = food.length;
@@ -27,9 +29,7 @@ class FoodController {
         });
       // We pass 1 for sorting data in
       // ascending order using ids
-      const foods = await FoodSchema.find()
-        .sort({ votes: 1, _id: 1 })
-        .limit(limit);
+      const foods = await FoodSchema.find().skip(skip).limit(limit);
       res.send({
         page,
         size,
