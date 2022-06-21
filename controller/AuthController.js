@@ -86,9 +86,16 @@ class UserController {
           expiresIn: '2h',
         }
       );
+      const refreshToken = jwt.sign(
+        { user_id: user._id, email },
+        process.env.REFRESH_TOKEN,
+        {
+          expiresIn: '3h',
+        }
+      );
       // save user token
       user.token = token;
-
+      user.refreshToken = refreshToken;
       // return new user
       return res.status(201).json(user);
     } catch (err) {
