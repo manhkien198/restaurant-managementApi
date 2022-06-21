@@ -96,6 +96,7 @@ class UserController {
       // save user token
       user.token = token;
       user.refreshToken = refreshToken;
+      delete user.password;
       // return new user
       return res.status(201).json(user);
     } catch (err) {
