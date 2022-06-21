@@ -2,7 +2,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
-const ProductSchema = require("../controller/ProductSchema");
+const ProductController = require("../controller/ProductController");
 
-router.get("/", auth, ProductSchema.index);
+router.get("/", auth, ProductController.index);
 module.exports = router;
