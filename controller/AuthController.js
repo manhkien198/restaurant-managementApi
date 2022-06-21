@@ -1,6 +1,6 @@
-const User = require('../model/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const User = require("../model/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 class UserController {
   //POST /auth/register
   async login(req, res) {
@@ -10,7 +10,7 @@ class UserController {
 
       // Validate user input
       if (!(email && password)) {
-        return res.status(400).send('All input is required');
+        return res.status(400).send("All input is required");
       }
       // Validate if user exist in our database
       const user = await User.findOne({ email });
@@ -21,14 +21,14 @@ class UserController {
           { user_id: user._id, email },
           process.env.TOKEN_KEY,
           {
-            expiresIn: '20s',
+            expiresIn: "2h",
           }
         );
         const refreshToken = jwt.sign(
           { user_id: user._id, email },
           process.env.REFRESH_TOKEN,
           {
-            expiresIn: '3h',
+            expiresIn: "3h",
           }
         );
         // save user token
@@ -43,7 +43,7 @@ class UserController {
           refreshToken: user.refreshToken,
         });
       }
-      return res.status(400).send('Invalid Credentials');
+      return res.status(400).send("Invalid Credentials");
     } catch (err) {
       console.log(err);
     }
@@ -56,7 +56,7 @@ class UserController {
 
       // Validate user input
       if (!(email && password && first_name && last_name)) {
-        return res.status(400).send('All input is required');
+        return res.status(400).send("All input is required");
       }
 
       // check if user already exist
@@ -64,7 +64,7 @@ class UserController {
       const oldUser = await User.findOne({ email });
 
       if (oldUser) {
-        return res.status(409).send('User Already Exist. Please Login');
+        return res.status(409).send("User Already Exist. Please Login");
       }
 
       //Encrypt user password
@@ -77,25 +77,6 @@ class UserController {
         email: email.toLowerCase(), // sanitize: convert email to lowercase
         password: encryptedPassword,
       });
-
-      // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: '2h',
-        }
-      );
-      const refreshToken = jwt.sign(
-        { user_id: user._id, email },
-        process.env.REFRESH_TOKEN,
-        {
-          expiresIn: '3h',
-        }
-      );
-      // save user token
-      user.token = token;
-      user.refreshToken = refreshToken;
       delete user.password;
       // return new user
       return res.status(201).json(user);
@@ -107,7 +88,7 @@ class UserController {
     const { refreshToken } = req.body;
     if (!refreshToken) {
       res.status(401).json({
-        errors: [{ msg: 'Refresh token not found' }],
+        errors: [{ msg: "Refresh token not found" }],
       });
     }
     try {
@@ -118,14 +99,14 @@ class UserController {
         { user_id: user._id, email },
         process.env.TOKEN_KEY,
         {
-          expiresIn: '20s',
+          expiresIn: "20s",
         }
       );
       const newRefreshToken = jwt.sign(
         { user_id: user._id, email },
         process.env.REFRESH_TOKEN,
         {
-          expiresIn: '3h',
+          expiresIn: "3h",
         }
       );
       userInfo.token = token;
@@ -139,8 +120,8 @@ class UserController {
         refreshToken: userInfo.refreshToken,
       });
     } catch (error) {
-      console.log('error :', error);
-      res.status(403).json({ errors: [{ msg: 'Invalid token' }] });
+      console.log("error :", error);
+      res.status(403).json({ errors: [{ msg: "Invalid token" }] });
     }
   }
 }
