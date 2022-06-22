@@ -31,10 +31,10 @@ class FoodController {
       // ascending order using ids
       const foods = await FoodSchema.find().skip(skip).limit(limit);
       res.send({
-        page,
-        size,
         data: foods,
         total: foodLength,
+        page,
+        size,
       });
     } catch (error) {
       res.sendStatus(500);

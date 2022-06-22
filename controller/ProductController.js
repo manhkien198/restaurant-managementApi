@@ -1,4 +1,4 @@
-const ProductSchema = require("../model/product");
+const ProductSchema = require('../model/product');
 class ProductController {
   //GET /role
   async index(req, res, next) {
@@ -31,10 +31,10 @@ class ProductController {
       // ascending order using ids
       const foods = await ProductSchema.find().skip(skip).limit(limit);
       res.send({
-        page,
-        size,
         data: foods,
         total: foodLength,
+        page,
+        size,
       });
     } catch (error) {
       res.sendStatus(500);
