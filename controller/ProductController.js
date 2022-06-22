@@ -40,5 +40,40 @@ class ProductController {
       res.sendStatus(500);
     }
   }
+  async showByFilter(req, res, next) {
+    try {
+      let { page, size, sort } = req.query;
+      const categoryId = req.params;
+      if (!page) {
+        page = 1;
+      }
+
+      if (!size) {
+        size = 10;
+      }
+      let productsLength;
+      const limit = parseInt(size);
+      const skip = (page - 1) * size;
+      await ProductSchema.find(categoryId)
+        .then((product) => {
+          productsLength = product.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      const products = await ProductSchema.find(categoryId)
+        .skip(skip)
+        .limit(limit);
+      res.send({
+        data: products,
+        total: categoriesLength,
+        page,
+        size,
+      });
+    } catch (error) {
+      res.sendStatus(500);
+    }
+  }
 }
 module.exports = new ProductController();

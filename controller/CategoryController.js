@@ -1,4 +1,5 @@
 const CategorySchema = require('../model/category');
+const ProductSchema = require('../model/product');
 class CategoryController {
   //GET /role
   async index(req, res, next) {
