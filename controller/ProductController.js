@@ -14,7 +14,7 @@ class ProductController {
       if (!size) {
         size = 10;
       }
-      let foodLength;
+      let productLength;
       //  We have to make it integer because
       // query parameter passed is string
       const limit = parseInt(size);
@@ -29,10 +29,10 @@ class ProductController {
         });
       // We pass 1 for sorting data in
       // ascending order using ids
-      const foods = await ProductSchema.find().skip(skip).limit(limit);
+      const products = await ProductSchema.find().skip(skip).limit(limit);
       res.send({
-        data: foods,
-        total: foodLength,
+        data: products,
+        total: productLength,
         page,
         size,
       });
