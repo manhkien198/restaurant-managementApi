@@ -42,9 +42,9 @@ class ProductController {
   async showByFilter(req, res, next) {
     try {
       let { page, size, sort } = req.query;
+
       const cateId = req.params;
       let titleCate;
-
       await CategorySchema.find({ _id: cateId.category_id })
         .then((category) => {
           titleCate = category[0].title;
@@ -59,13 +59,20 @@ class ProductController {
       if (!size) {
         size = 10;
       }
+      let sortQuery = ProductSchema.find({
+        category: titleCate,
+      });
+      if (req.query.hasOwnProperty("sort")) {
+        const arrSort = sort.split("-");
+        const obj = {};
+        obj[arrSort[0]] = arrSort[1];
+        sortQuery = sortQuery.sort(obj);
+      }
       const limit = parseInt(size);
       const skip = (page - 1) * size;
-      const count = await ProductSchema.count();
+      const count = await sortQuery.count();
 
-      const products = await ProductSchema.find({ category: titleCate })
-        .skip(skip)
-        .limit(limit);
+      const products = await sortQuery.skip(skip).limit(limit);
       res.send({
         data: products,
         total: count,
