@@ -1,10 +1,10 @@
 const ProductSchema = require('../model/product');
+const CategorySchema = require('../model/category');
 class ProductController {
   //GET /role
   async index(req, res, next) {
     try {
       let { page, size, sort } = req.query;
-
       // If the page is not applied in query.
       if (!page) {
         // Make the Default value one.
@@ -43,7 +43,17 @@ class ProductController {
   async showByFilter(req, res, next) {
     try {
       let { page, size, sort } = req.query;
-      const categoryId = req.params;
+      const cateId = req.params;
+      console.log(cateId.category_id);
+      let titleCate;
+
+      await CategorySchema.find({ _id: cateId.category_id })
+        .then((category) => {
+          titleCate = category[0].title;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       if (!page) {
         page = 1;
       }
@@ -54,7 +64,7 @@ class ProductController {
       let productsLength;
       const limit = parseInt(size);
       const skip = (page - 1) * size;
-      await ProductSchema.find(categoryId)
+      await ProductSchema.find({ category: titleCate })
         .then((product) => {
           productsLength = product.length;
         })
@@ -62,12 +72,12 @@ class ProductController {
           console.log(err);
         });
 
-      const products = await ProductSchema.find(categoryId)
+      const products = await ProductSchema.find({ category: titleCate })
         .skip(skip)
         .limit(limit);
       res.send({
         data: products,
-        total: categoriesLength,
+        total: productsLength,
         page,
         size,
       });
