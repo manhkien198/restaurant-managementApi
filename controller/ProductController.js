@@ -44,7 +44,6 @@ class ProductController {
     try {
       let { page, size, sort } = req.query;
       const cateId = req.params;
-      console.log(cateId.category_id);
       let titleCate;
 
       await CategorySchema.find({ _id: cateId.category_id })
