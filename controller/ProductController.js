@@ -1,15 +1,16 @@
-const ProductSchema = require("../model/product");
-const CategorySchema = require("../model/category");
+const ProductSchema = require('../model/product');
+const CategorySchema = require('../model/category');
 class ProductController {
   //GET /role
   async index(req, res, next) {
     try {
       let { page, size, sort } = req.query;
       let sortQuery = ProductSchema.find({});
-      if (req.query.hasOwnProperty("sort")) {
-        const arrSort = sort.split("-");
+      if (req.query.hasOwnProperty('sort')) {
+        const arrSort = sort.split('-');
         const obj = {};
-        obj[arrSort[0]] = arrSort[1];
+        const isValidType = ['asc', 'desc'].includes(arrSort[1]);
+        obj[arrSort[0]] = isValidType ? arrSort[1] : 'desc';
         sortQuery = sortQuery.sort(obj);
       }
       // If the page is not applied in query.
@@ -45,9 +46,9 @@ class ProductController {
 
       const cateId = req.params;
       let titleCate;
-      await CategorySchema.find({ _id: cateId.category_id })
+      await CategorySchema.findOne({ _id: cateId.category_id })
         .then((category) => {
-          titleCate = category[0].title;
+          titleCate = category.title;
         })
         .catch((err) => {
           console.log(err);
@@ -62,15 +63,19 @@ class ProductController {
       let sortQuery = ProductSchema.find({
         category: titleCate,
       });
-      if (req.query.hasOwnProperty("sort")) {
-        const arrSort = sort.split("-");
+      console.log(sortQuery);
+      if (req.query.hasOwnProperty('sort')) {
+        const arrSort = sort.split('-');
         const obj = {};
-        obj[arrSort[0]] = arrSort[1];
+        const isValidType = ['asc', 'desc'].includes(arrSort[1]);
+        obj[arrSort[0]] = isValidType ? arrSort[1] : 'desc';
         sortQuery = sortQuery.sort(obj);
       }
       const limit = parseInt(size);
       const skip = (page - 1) * size;
-      const count = await sortQuery.count();
+      const count = await ProductSchema.find({
+        category: titleCate,
+      }).count();
 
       const products = await sortQuery.skip(skip).limit(limit);
       res.send({
@@ -80,6 +85,7 @@ class ProductController {
         size,
       });
     } catch (error) {
+      console.log('error :', error);
       res.sendStatus(500);
     }
   }
