@@ -63,7 +63,6 @@ class ProductController {
       let sortQuery = ProductSchema.find({
         category: titleCate,
       });
-      console.log(sortQuery);
       if (req.query.hasOwnProperty('sort')) {
         const arrSort = sort.split('-');
         const obj = {};
