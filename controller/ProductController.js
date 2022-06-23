@@ -4,8 +4,17 @@ class ProductController {
   //GET /role
   async index(req, res, next) {
     try {
-      let { page, size, sort } = req.query;
+      let { page, size, sort, q } = req.query;
       let sortQuery = ProductSchema.find({});
+      if (req.query.hasOwnProperty('q')) {
+        sortQuery = ProductSchema.find({
+          $or: [
+            { title: { $regex: q } },
+            { category: { $regex: q } },
+            { description: { $regex: q } },
+          ],
+        });
+      }
       if (req.query.hasOwnProperty('sort')) {
         const arrSort = sort.split('-');
         const obj = {};
