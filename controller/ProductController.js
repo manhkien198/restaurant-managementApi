@@ -35,17 +35,19 @@ class ProductController {
       // query parameter passed is string
       const limit = parseInt(size);
       const skip = (page - 1) * size;
-      const count = await ProductSchema.count();
       // We pass 1 for sorting data in
       // ascending order using ids
       const products = await sortQuery.skip(skip).limit(limit);
+      const count = await sortQuery.clone().countDocuments();
+
       res.send({
-        data: products,
+        data: products ? products : [],
         total: count,
         page,
         size,
       });
     } catch (error) {
+      console.log('error :', error);
       res.sendStatus(500);
     }
   }
