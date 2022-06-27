@@ -5,6 +5,7 @@ const foodRouter = require('./food');
 const employeeRouter = require('./employee');
 const productRouter = require('./products');
 const categoryRouter = require('./categories');
+const blogRouter = require('./blog');
 function routes(app) {
   app.use('/auth', userRouter);
   app.use('/roles', roleRouter);
@@ -13,6 +14,7 @@ function routes(app) {
   app.use('/employee', employeeRouter);
   app.use('/products', productRouter);
   app.use('/categories', categoryRouter);
+  app.use('/blogs', blogRouter);
 }
 
 module.exports = routes;
